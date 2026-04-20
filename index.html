@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --tvs-blue: #233B7E;
@@ -908,6 +909,10 @@
         </div>
 
         <div class="control-pane">
+            <div id="sync-indicator" style="padding: 0 12px; font-size: 9px; font-weight: 900; color: var(--text-muted); display: flex; align-items: center; gap: 6px; border-right: 1px solid var(--border-subtle); margin-right: 4px;">
+                <div id="sync-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ccc;"></div>
+                <span id="sync-text">INITIALIZING</span>
+            </div>
             <div class="search-wrap">
                 <i data-lucide="search" size="20" class="search-icon"></i>
                 <input type="text" id="live-search" class="search-input" placeholder="Search chapter or mission..."
@@ -967,12 +972,12 @@
             <p
                 style="font-size: 11px; color: var(--text-muted); font-weight:900; margin-bottom: 2.5rem; text-transform:uppercase">
                 Operational Personnel Only</p>
-            <div class="form-group"><label class="form-label slant-safe">Username</label><input type="text"
-                    id="login-user" class="form-input" placeholder="Username"></div>
+            <div class="form-group"><label class="form-label slant-safe">Marshal Email</label><input type="email"
+                    id="login-user" class="form-input" placeholder="marshal@tvs.com"></div>
             <div class="form-group"><label class="form-label slant-safe">Access Key</label><input type="password"
                     id="login-pass" class="form-input" placeholder="••••••••"></div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:3rem">
-                <button class="btn-action btn-authorize slant-safe" onclick="handleLogin()">Authorize</button>
+                <button id="login-btn" class="btn-action btn-authorize slant-safe" onclick="handleLogin()">Authorize</button>
                 <button class="btn-action btn-decline slant-safe"
                     onclick="toggleModal('login-overlay', false)">Decline</button>
             </div>
@@ -984,6 +989,8 @@
             <div class="modal-top">
                 <h3 class="slant-safe" style="font-weight:900; color:var(--tvs-blue)">STRATEGIC COMMAND</h3>
                 <div style="display:flex; gap:12px; align-items:center;">
+                    <button onclick="handleLogout()"
+                        style="background:none; border:1px solid var(--tvs-red); color:var(--tvs-red); padding:10px 18px; border-radius:12px; font-weight:900; font-size:11px; cursor:pointer">LOGOUT</button>
                     <button onclick="resetSeason()"
                         style="background:none; border:1px solid var(--text-muted); color:var(--text-muted); padding:10px 18px; border-radius:12px; font-weight:900; font-size:11px; cursor:pointer">WIPE
                         PORTAL</button>
@@ -1012,6 +1019,10 @@
     </div>
 
     <script>
+        const SUPABASE_URL = 'https://zfstkcphlasxaeokixsb.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpmc3RrY3BobGFzeGFlb2tpeHNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3MDI5NzgsImV4cCI6MjA5MjI3ODk3OH0.t0GPMci-INIVl3WGqSOqsj72lDQyZNTEWXzSNhUH9b8';
+        const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
         const chaptersList = ['Bagmati', 'Narayani', 'Lumbini', 'Mahakali', 'Gandaki', 'Bheri', 'Mechi', 'Rapti', 'Koshi'];
         const monthsList = [
             'May 2026', 'June 2026', 'July 2026', 'August 2026', 'September 2026', 'October 2026',
@@ -1029,17 +1040,29 @@
         let rides = [];
         let bannerConfig = { title: "2026 Expedition", date: "October 2026", desc: "AOG X CULT discovery. Chapter registration open.", link: "#", visible: true, bgImage: "" };
         let chaptersData = [
-            { name: "Bagmati", marshal: "Milan, Abishek, Nabin, Rakesh", members: 685, status: "Active (A+)" },
-            { name: "Narayani", marshal: "Surendra Raj Parajuli", members: 324, status: "Active (A)" },
-            { name: "Bheri", marshal: "Sagar Chaudhary (Probation)", members: 255, status: "Active (B)" },
-            { name: "Lumbini", marshal: "Ayush Nepal", members: 193, status: "Active (B-)" },
-            { name: "Mechi", marshal: "Sanjesh Budhathoki", members: 285, status: "Active (B-)" },
-            { name: "Koshi", marshal: "Suraj Dahal", members: 356, status: "Active (C+)" },
-            { name: "Gandaki", marshal: "Sanjay Ale Magar", members: 134, status: "Active (B+)" },
-            { name: "Rapti", marshal: "Janak Sharma", members: 48, status: "Active (B-)" },
-            { name: "Mahakali", marshal: "Rupesh B.K.", members: 109, status: "Active (B-)" }
+            { id: 1, name: "Bagmati", marshal: "Milan, Abishek, Nabin, Rakesh", members: 685, status: "Active (A+)" },
+            { id: 2, name: "Narayani", marshal: "Surendra Raj Parajuli", members: 324, status: "Active (A)" },
+            { id: 3, name: "Bheri", marshal: "Sagar Chaudhary (Probation)", members: 255, status: "Active (B)" },
+            { id: 4, name: "Lumbini", marshal: "Ayush Nepal", members: 193, status: "Active (B-)" },
+            { id: 5, name: "Mechi", marshal: "Sanjesh Budhathoki", members: 285, status: "Active (B-)" },
+            { id: 6, name: "Koshi", marshal: "Suraj Dahal", members: 356, status: "Active (C+)" },
+            { id: 7, name: "Gandaki", marshal: "Sanjay Ale Magar", members: 134, status: "Active (B+)" },
+            { id: 8, name: "Rapti", marshal: "Janak Sharma", members: 48, status: "Active (B-)" },
+            { id: 9, name: "Mahakali", marshal: "Rupesh B.K.", members: 109, status: "Active (B-)" }
         ];
         let isLoggedIn = false, currentTypeFilter = 'all', currentQFilter = 'all', searchTerm = '', allExpanded = false;
+
+        // Draft State for Manual Save
+        let draftRides = [], draftChapters = [], draftBanner = {};
+
+        function updateSyncStatus(status) {
+            const dot = document.getElementById('sync-dot');
+            const txt = document.getElementById('sync-text');
+            if (status === 'online') { dot.style.background = '#22c55e'; txt.textContent = 'CONNECTED'; }
+            else if (status === 'syncing') { dot.style.background = '#eab308'; txt.textContent = 'SYNCING'; }
+            else if (status === 'draft') { dot.style.background = '#f97316'; txt.textContent = 'DRAFT MODE'; }
+            else { dot.style.background = '#ef4444'; txt.textContent = 'OFFLINE'; }
+        }
 
         function seedRides() {
             let seeded = []; let idCounter = 1;
@@ -1052,39 +1075,80 @@
             return seeded;
         }
 
-        function initPortal() {
+        async function initPortal() {
+            updateSyncStatus('syncing');
             try {
-                const localR = localStorage.getItem('tvs_v7_rides');
-                const localB = localStorage.getItem('tvs_v7_banner');
-                const localC = localStorage.getItem('tvs_v7_chapters');
+                // 1. Fetch Rides
+                const { data: dbRides, error: rErr } = await db.from('rides').select('*').order('id', { ascending: true });
+                if (rErr) throw rErr;
 
-                rides = localR ? JSON.parse(localR) : [];
-                if (!Array.isArray(rides) || rides.length === 0) rides = seedRides();
+                // 2. Fetch Chapters
+                const { data: dbChapters, error: cErr } = await db.from('chapters').select('*').order('id', { ascending: true });
+                if (cErr) throw cErr;
 
-                if (localB) {
-                    const parsedB = JSON.parse(localB);
-                    if (parsedB && typeof parsedB === 'object') bannerConfig = { ...bannerConfig, ...parsedB };
+                // 3. Fetch Config
+                const { data: dbConfig, error: cfErr } = await db.from('portal_config').select('*');
+                if (cfErr) throw cfErr;
+
+                // Migration Logic: If DB is empty, try to seed from local or defaults
+                if (!dbRides || dbRides.length === 0) {
+                    console.log("Cloud empty, migrating local data...");
+                    const localR = localStorage.getItem('tvs_v7_rides');
+                    rides = localR ? JSON.parse(localR) : seedRides();
+                    
+                    const localB = localStorage.getItem('tvs_v7_banner');
+                    if (localB) bannerConfig = JSON.parse(localB);
+
+                    const localC = localStorage.getItem('tvs_v7_chapters');
+                    if (localC) chaptersData = JSON.parse(localC);
+
+                    await saveData(); 
+                } else {
+                    rides = dbRides;
+                    chaptersData = dbChapters;
+                    if (dbConfig) {
+                        dbConfig.forEach(cfg => {
+                            if (cfg.key === 'banner') bannerConfig = cfg.value;
+                        });
+                    }
                 }
-
-                if (localC) {
-                    const parsedC = JSON.parse(localC);
-                    if (Array.isArray(parsedC) && parsedC.length > 0) chaptersData = parsedC;
-                }
-                saveData();
+                updateSyncStatus('online');
+                renderAll();
             } catch (err) {
-                console.error("Portal Init Error:", err);
-                rides = seedRides();
-                saveData();
+                console.error("Cloud Sync Error:", err);
+                updateSyncStatus('offline');
+                // Fallback to local
+                const localR = localStorage.getItem('tvs_v7_rides');
+                rides = localR ? JSON.parse(localR) : seedRides();
+                renderAll();
             }
         }
 
-        function saveData() {
+        async function saveData() {
+            if (!db) return;
+            updateSyncStatus('syncing');
             try {
+                // Save Rides
+                const { error: rErr } = await db.from('rides').upsert(rides);
+                if (rErr) throw rErr;
+
+                // Save Chapters
+                const { error: cErr } = await db.from('chapters').upsert(chaptersData.map((c, i) => ({ ...c, id: i + 1 })), { onConflict: 'name' });
+                if (cErr) throw cErr;
+
+                // Save Banner Config
+                const { error: bErr } = await db.from('portal_config').upsert({ key: 'banner', value: bannerConfig });
+                if (bErr) throw bErr;
+
+                // Backup to LocalStorage
                 localStorage.setItem('tvs_v7_rides', JSON.stringify(rides));
                 localStorage.setItem('tvs_v7_banner', JSON.stringify(bannerConfig));
                 localStorage.setItem('tvs_v7_chapters', JSON.stringify(chaptersData));
+
+                updateSyncStatus('online');
             } catch (err) {
-                console.error("Storage limit reached or error:", err);
+                console.error("Save Error:", err);
+                updateSyncStatus('offline');
             }
         }
 
@@ -1095,15 +1159,73 @@
                 document.body.classList.toggle('modal-open', show);
             }
         }
-        function handleLogin() {
-            if (document.getElementById('login-user').value === 'TVS_Nepal' && document.getElementById('login-pass').value === 'AOGxCULT9') {
-                isLoggedIn = true; toggleModal('login-overlay', false); toggleEdit();
-            } else alert('ID rejected.');
+        async function handleLogin() {
+            const email = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+            const btn = document.getElementById('login-btn');
+            
+            if (!email || !pass) return;
+            
+            btn.textContent = 'Verifying...';
+            btn.disabled = true;
+
+            const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+
+            if (error) {
+                alert('Authorization Rejected: ' + error.message);
+                btn.textContent = 'Authorize';
+                btn.disabled = false;
+            } else {
+                isLoggedIn = true;
+                toggleModal('login-overlay', false);
+                toggleEdit();
+            }
+        }
+
+        async function handleLogout() {
+            if (confirm('Sign out from Strategic Command?')) {
+                await db.auth.signOut();
+                isLoggedIn = false;
+                toggleModal('edit-overlay', false);
+                location.reload(); 
+            }
+        }
+
+        async function checkSession() {
+            const { data: { session } } = await db.auth.getSession();
+            if (session) {
+                isLoggedIn = true;
+                console.log("Marshal session restored.");
+            }
         }
         function toggleEdit() {
             if (!isLoggedIn) { toggleModal('login-overlay', true); return; }
-            toggleModal('edit-overlay', document.getElementById('edit-overlay').style.display !== 'flex');
-            if (document.getElementById('edit-overlay').style.display === 'flex') renderEditPanel();
+            const isClosing = document.getElementById('edit-overlay').style.display === 'flex';
+            if (!isClosing) {
+                // Initialize drafts from current global state
+                draftRides = JSON.parse(JSON.stringify(rides));
+                draftChapters = JSON.parse(JSON.stringify(chaptersData));
+                draftBanner = JSON.parse(JSON.stringify(bannerConfig));
+                updateSyncStatus('draft'); 
+            } else {
+                updateSyncStatus('online');
+            }
+            toggleModal('edit-overlay', !isClosing);
+            if (!isClosing) renderEditPanel();
+        }
+
+        async function commitUpdates() {
+            if (!confirm('Deploy these updates globally? Riders on all devices will see changes immediately.')) return;
+            rides = JSON.parse(JSON.stringify(draftRides));
+            chaptersData = JSON.parse(JSON.stringify(draftChapters));
+            bannerConfig = JSON.parse(JSON.stringify(draftBanner));
+            
+            // Clean up old rides in DB first if any were deleted
+            await db.from('rides').delete().neq('id', 0);
+
+            await saveData();
+            renderAll();
+            toggleModal('edit-overlay', false);
         }
         function toggleRoadmap() {
             toggleModal('roadmap-overlay', document.getElementById('roadmap-overlay').style.display !== 'flex');
@@ -1118,13 +1240,23 @@
             renderCalendar();
         }
 
-        function resetSeason() {
+        async function resetSeason() {
             if (confirm('Surgical Reset to 26-27 Factory Defaults?')) {
-                localStorage.removeItem('tvs_v7_rides');
-                localStorage.removeItem('tvs_v7_banner');
-                localStorage.removeItem('tvs_v7_chapters');
-                initPortal();
-                renderAll();
+                updateSyncStatus('syncing');
+                try {
+                    await db.from('rides').delete().neq('id', 0);
+                    await db.from('chapters').delete().neq('id', 0);
+                    await db.from('portal_config').delete().eq('key', 'banner');
+                    
+                    localStorage.removeItem('tvs_v7_rides');
+                    localStorage.removeItem('tvs_v7_banner');
+                    localStorage.removeItem('tvs_v7_chapters');
+                    
+                    await initPortal();
+                } catch (e) {
+                    console.error("Reset error", e);
+                    updateSyncStatus('offline');
+                }
             }
         }
 
@@ -1195,11 +1327,11 @@
         function handleImage(e) {
             if (!e.files || !e.files[0]) return;
             const file = e.files[0];
-            if (file.size > 1048576) { alert('Image too large. Max 1MB.'); return; }
+            if (file.size > 5242880) { alert('Image too large. Max 5MB.'); return; }
             const reader = new FileReader();
             reader.onload = (ev) => {
-                bannerConfig.bgImage = ev.target.result;
-                saveData(); renderHero();
+                draftBanner.bgImage = ev.target.result;
+                renderEditPanel();
             };
             reader.readAsDataURL(file);
         }
@@ -1209,18 +1341,22 @@
                 const body = document.getElementById('edit-body');
                 if (!body) return;
                 body.innerHTML = `
+                <div style="display:flex; justify-content:flex-end; margin-bottom: 20px; position: sticky; top: 0; z-index: 10; background: var(--bg-pure); padding: 10px 0; border-bottom: 1px solid var(--border-subtle)">
+                    <button onclick="commitUpdates()" style="background:var(--tvs-blue); color:white; border:none; padding:12px 28px; border-radius:12px; font-weight:900; font-size:13px; cursor:pointer; box-shadow: 0 4px 15px rgba(35, 59, 126, 0.3)">🚀 DEPLOY UPDATES</button>
+                </div>
+
                 <div class="command-tier">
                     <div class="tier-label">Tier 1: Registration Hero Control</div>
                     <div class="mgr-grid">
-                        <div class="form-group"><label class="form-label">Banner Title</label><input type="text" class="form-input" value="${bannerConfig.title}" onchange="updateBanner('title',this.value)"></div>
-                        <div class="form-group"><label class="form-label">Schedule Info</label><input type="text" class="form-input" value="${bannerConfig.date}" onchange="updateBanner('date',this.value)"></div>
-                        <div class="form-group" style="grid-column: span 2"><label class="form-label">Brief Summary</label><input type="text" class="form-input" value="${bannerConfig.desc}" onchange="updateBanner('desc',this.value)"></div>
-                        <div class="form-group"><label class="form-label">Reg Link</label><input type="text" class="form-input" value="${bannerConfig.link}" onchange="updateBanner('link',this.value)"></div>
-                        <div class="form-group"><label class="form-label">Site Visibility</label><select class="form-input" onchange="updateBanner('visible',this.value==='true')"><option value="true" ${bannerConfig.visible ? 'selected' : ''}>Show Banner</option><option value="false" ${!bannerConfig.visible ? 'selected' : ''}>Hide Banner</option></select></div>
+                        <div class="form-group"><label class="form-label">Banner Title</label><input type="text" class="form-input" value="${draftBanner.title}" onchange="updateBanner('title',this.value)"></div>
+                        <div class="form-group"><label class="form-label">Schedule Info</label><input type="text" class="form-input" value="${draftBanner.date}" onchange="updateBanner('date',this.value)"></div>
+                        <div class="form-group" style="grid-column: span 2"><label class="form-label">Brief Summary</label><input type="text" class="form-input" value="${draftBanner.desc}" onchange="updateBanner('desc',this.value)"></div>
+                        <div class="form-group"><label class="form-label">Reg Link</label><input type="text" class="form-input" value="${draftBanner.link}" onchange="updateBanner('link',this.value)"></div>
+                        <div class="form-group"><label class="form-label">Site Visibility</label><select class="form-input" onchange="updateBanner('visible',this.value==='true')"><option value="true" ${draftBanner.visible ? 'selected' : ''}>Show Banner</option><option value="false" ${!draftBanner.visible ? 'selected' : ''}>Hide Banner</option></select></div>
                         <div class="form-group" style="grid-column: span 2">
                             <label class="form-label">Backdrop Photo (Suggest: 1200x400)</label>
                             <input type="file" class="form-input" accept="image/*" onchange="handleImage(this)">
-                            ${bannerConfig.bgImage ? '<button onclick="bannerConfig.bgImage=\'\';saveData();renderHero();" style="font-size:10px; color:var(--tvs-red); margin-top:5px; background:none; border:none; cursor:pointer; font-weight:810">REMOVE PHOTO</button>' : ''}
+                            ${draftBanner.bgImage ? `<button onclick="draftBanner.bgImage='';renderEditPanel();" style="font-size:10px; color:var(--tvs-red); margin-top:5px; background:none; border:none; cursor:pointer; font-weight:810">REMOVE PHOTO</button>` : ''}
                         </div>
                     </div>
                 </div>
@@ -1228,7 +1364,7 @@
                 <div class="command-tier">
                     <div class="tier-label">Tier 2: Chapter Intelligence</div>
                     <div style="display:grid; grid-template-columns: 1fr; gap:10px">
-                        ${chaptersData.map((c, i) => `
+                        ${draftChapters.map((c, i) => `
                             <div style="display:grid; grid-template-columns: 1fr 1.5fr 0.8fr 1fr; gap:10px; background:white; padding:10px; border-radius:12px">
                                 <span style="font-weight:900; font-size:12px; align-self:center">${c.name}</span>
                                 <input type="text" value="${c.marshal}" class="form-input" style="padding:8px" onchange="updateChapter(${i}, 'marshal', this.value)">
@@ -1242,7 +1378,7 @@
                 <div class="tier-label" style="margin-left:10px">Tier 3: Mission Roadmap</div>
             `;
                 monthsList.forEach(m => {
-                    const mRides = rides.filter(r => r.month === m); if (mRides.length === 0) return;
+                    const mRides = draftRides.filter(r => r.month === m); if (mRides.length === 0) return;
                     const grp = document.createElement('div'); grp.innerHTML = `<div style="font-size:11px; font-weight:900; color:var(--text-dim); margin:20px 0 10px 5px; text-transform:uppercase">${m}</div>`;
                     mRides.forEach(r => {
                         const card = document.createElement('div'); card.className = 'edit-card';
@@ -1268,11 +1404,15 @@
             } catch (e) { console.error("Edit Panel Render Error", e); }
         }
 
-        function updateRide(id, f, v) { const r = rides.find(rd => rd.id === id); if (r) r[f] = v; saveData(); renderAll(); }
-        function deleteRide(id) { if (confirm('Delete?')) { rides = rides.filter(r => r.id !== id); saveData(); renderAll(); } }
-        function addRide() { const id = Math.max(0, ...rides.map(r => r.id)) + 1; rides.push({ id, month: 'May 2026', week: 'Wk 1', day: "", type: 'aog', label: 'New Mission', q: 'Q2', done: false, details: "" }); saveData(); renderAll(); }
-        function updateBanner(f, v) { bannerConfig[f] = v; saveData(); renderHero(); }
-        function updateChapter(i, f, v) { chaptersData[i][f] = v; saveData(); renderChapters(); }
+        function updateRide(id, f, v) { const r = draftRides.find(rd => rd.id === id); if (r) r[f] = v; renderEditPanel(); }
+        function deleteRide(id) { if (confirm('Delete?')) { draftRides = draftRides.filter(r => r.id !== id); renderEditPanel(); } }
+        function addRide() { 
+            const id = Math.max(0, ...draftRides.map(r => r.id)) + 1; 
+            draftRides.push({ id, month: 'May 2026', week: 'Wk 1', day: "", type: 'aog', label: 'New Mission', q: 'Q2', done: false, details: "" }); 
+            renderEditPanel(); 
+        }
+        function updateBanner(f, v) { draftBanner[f] = v; renderEditPanel(); }
+        function updateChapter(i, f, v) { draftChapters[i][f] = v; renderEditPanel(); }
 
         function setFilter(f) {
             currentTypeFilter = f; document.querySelectorAll('.filter-group:first-child .filt-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === f));
@@ -1329,7 +1469,11 @@
             if (window.lucide) lucide.createIcons();
         }
 
-        window.onload = () => { initPortal(); renderAll(); };
+        window.onload = async () => { 
+            await checkSession();
+            await initPortal(); 
+            renderAll(); 
+        };
     </script>
 </body>
 
