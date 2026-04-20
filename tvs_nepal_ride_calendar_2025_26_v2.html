@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVS Nepal — Ride Calendar 2026-27</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --tvs-blue: #233B7E;
+            --tvs-red: #E13D2F;
+            --tvs-red-light: rgba(225, 61, 47, 0.08);
+            --bg-slate: #F1F5F9;
+            --bg-pure: #FFFFFF;
+            --border-subtle: #E2E8F0;
+            --text-main: #0F172A;
+            --text-dim: #475569;
+            --text-muted: #94A3B8;
+            --aog-blue: #233B7E;
+            --cult-green: #4D7C0F;
+            --marquee-gold: #B45309;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --slant: skewX(-5deg);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-slate);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            flex: 1;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--tvs-blue);
+            position: relative;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: var(--tvs-red);
+        }
+
+        .brand-logo {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--tvs-blue);
+            transform: var(--slant);
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+        }
+
+        .brand-logo span {
+            color: var(--tvs-red);
+        }
+
+        .header-meta h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .comm-card {
+            background: var(--bg-pure);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comm-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-box {
+            background: var(--bg-pure);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            border-bottom: 4px solid var(--border-subtle);
+        }
+
+        .stat-val {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--tvs-blue);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .stat-target {
+            font-size: 12px;
+            color: var(--tvs-red);
+            font-weight: 700;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .section-label {
+            font-size: 14px;
+            font-weight: 800;
+            background: var(--tvs-blue);
+            color: white;
+            padding: 6px 20px;
+            transform: var(--slant);
+            text-transform: uppercase;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border-subtle);
+        }
+
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 5rem;
+        }
+
+        .activity-card {
+            background: var(--bg-pure);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .progress-wrap {
+            height: 8px;
+            background: var(--bg-slate);
+            border-radius: 4px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            transition: width 1s ease-out;
+        }
+
+        .control-pane {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-subtle);
+            border-radius: 50px;
+            padding: 0.6rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 1.5rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-group {
+            display: flex;
+            background: var(--bg-slate);
+            padding: 4px;
+            border-radius: 50px;
+            gap: 4px;
+        }
+
+        .filt-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .filt-btn.active {
+            background: var(--tvs-blue);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .month-box {
+            background: var(--bg-pure);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+        }
+
+        .month-box.marquee {
+            border: 2px solid var(--tvs-red);
+        }
+
+        .month-header {
+            padding: 1.5rem;
+            background: var(--bg-slate);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .month-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--tvs-blue);
+            transform: var(--slant);
+        }
+
+        .month-content {
+            padding: 1.5rem;
+        }
+
+        .wk-row {
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .wk-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .evt-container {
+            margin-bottom: 10px;
+        }
+
+        .evt-pill {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background: var(--bg-pure);
+            border-left: 4px solid transparent;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, opacity 0.3s;
+        }
+
+        .evt-pill:hover {
+            transform: translateX(5px);
+        }
+
+        .evt-pill i {
+            stroke: currentColor;
+        }
+
+        .evt-pill.concluded {
+            opacity: 0.55;
+            background: var(--bg-slate) !important;
+            border-left: 4px solid var(--text-muted) !important;
+            border-style: dashed !important;
+            color: var(--text-muted) !important;
+        }
+
+        .evt-aog {
+            border-color: var(--tvs-blue);
+            color: var(--tvs-blue);
+        }
+
+        .evt-cult {
+            border-color: var(--cult-green);
+            color: var(--cult-green);
+        }
+
+        .evt-marquee {
+            border-color: var(--tvs-red);
+            color: var(--tvs-red);
+            background: var(--tvs-red-light);
+        }
+
+        .done-icon {
+            margin-left: auto;
+            color: var(--cult-green);
+            display: flex;
+            align-items: center;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s;
+            opacity: 0.5;
+        }
+
+        .expand-icon.open {
+            transform: rotate(180deg);
+            opacity: 1;
+        }
+
+        .evt-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.3s;
+            background: var(--bg-slate);
+            margin: 0 4px;
+            border-radius: 0 0 10px 10px;
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            padding: 0 14px;
+        }
+
+        .evt-details.open {
+            max-height: 500px;
+            padding: 12px 14px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Floating Controls */
+        .floating-controls {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .circle-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: 0.2s;
+        }
+
+        .circle-btn i {
+            stroke: white;
+        }
+
+        .btn-blue {
+            background: var(--tvs-blue);
+        }
+
+        .btn-red {
+            background: var(--tvs-red);
+        }
+
+        /* Overlays */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-window {
+            background: var(--bg-pure);
+            border-radius: 30px;
+            width: 95%;
+            max-width: 950px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-window {
+            max-width: 400px;
+            padding: 2.5rem;
+        }
+
+        .modal-top {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        /* Roadmap */
+        .roadmap-scroll {
+            overflow-x: auto;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+        }
+
+        .roadmap-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        .roadmap-table th,
+        .roadmap-table td {
+            padding: 12px;
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .roadmap-table th {
+            background: var(--bg-slate);
+            color: var(--tvs-blue);
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .roadmap-table td.chap-col {
+            background: var(--bg-pure);
+            color: var(--text-main);
+            font-weight: 700;
+            text-align: left;
+            position: sticky;
+            left: 0;
+        }
+
+        .roadmap-marker {
+            font-weight: 800;
+            color: white;
+            border-radius: 4px;
+            padding: 2px 6px;
+        }
+
+        .bg-aog {
+            background: var(--tvs-blue);
+        }
+
+        .bg-cult {
+            background: var(--cult-green);
+        }
+
+        .bg-marquee {
+            background: var(--tvs-red);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--tvs-blue);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transform: var(--slant);
+            transition: 0.2s;
+        }
+
+        .edit-card {
+            background: var(--bg-slate);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .edit-row {
+            display: grid;
+            grid-template-columns: 120px 120px 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .type-picker {
+            display: flex;
+            gap: 4px;
+            background: white;
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .type-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .type-btn i {
+            stroke: white;
+        }
+
+        .type-btn.active {
+            opacity: 1;
+        }
+
+        .type-aog {
+            background: var(--tvs-blue);
+        }
+
+        .type-cult {
+            background: var(--cult-green);
+        }
+
+        .type-marquee {
+            background: var(--tvs-red);
+        }
+
+        .details-area {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 80px;
+            outline: none;
+        }
+
+        .word-counter {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .word-counter.warning {
+            color: var(--tvs-red);
+        }
+
+        .marshal-footer {
+            text-align: center;
+            padding: 4rem 1.5rem;
+            background: var(--bg-pure);
+            border-top: 1px solid var(--border-subtle);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+
+            .community-grid,
+            .stats-container,
+            .edit-row {
+                grid-template-columns: 1fr;
+            }
+
+            .control-pane {
+                border-radius: 20px;
+                flex-direction: column;
+                height: auto;
+                padding: 1rem;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="app-header">
+            <div class="brand-logo">TVS <span>Nepal</span></div>
+            <div class="header-meta">
+                <h2>Ride Calendar 2026–27</h2>
+                <p style="font-size: 11px; color: var(--text-muted); font-weight:600;">JAGADAMBA MOTORS PVT. LTD.</p>
+            </div>
+        </header>
+
+        <div class="community-grid">
+            <div class="comm-card">
+                <div class="comm-badge" style="color:var(--tvs-blue)"><i data-lucide="zap"></i> AOG - Performance</div>
+                <p class="comm-desc">Apache Owners Group: Racing technology and precision rides across Nepal's terrain.
+                </p>
+                <div class="comm-tags"><span class="tag">9 Chapters</span><span class="tag">Target: 36 Rides</span>
+                </div>
+            </div>
+            <div class="comm-card">
+                <div class="comm-badge" style="color:var(--tvs-red)"><i data-lucide="compass"></i> CULT - Discovery
+                </div>
+                <p class="comm-desc">Travel and lifestyle: Exploring culture and discovery with the spirit of Ronin.</p>
+                <div class="comm-tags"><span class="tag">12 Months</span><span class="tag">Target: 12 Rides</span></div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-box" style="border-bottom-color: var(--cult-green)">
+                <span class="stat-label">Season Execution</span>
+                <span class="stat-val" id="stat-done">0%</span>
+                <div class="stat-target" id="done-counter">0 Concluded</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">AOG Rides</span>
+                <span class="stat-val" id="stat-aog" style="color: var(--tvs-blue)">0</span>
+                <div class="stat-target" id="aog-tracker"></div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">CULT Rides</span>
+                <span class="stat-val" id="stat-cult" style="color: var(--tvs-red)">0</span>
+                <div class="stat-target" id="cult-tracker"></div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Total Planned</span>
+                <span class="stat-val" id="stat-total">0</span>
+                <div class="stat-target">Full Season</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="section-label">Chapter Stats</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="activity-grid" id="chapter-grid"></div>
+
+        <div class="section-header">
+            <span class="section-label">Ride Schedule</span>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="control-pane">
+            <div class="filter-group">
+                <button class="filt-btn active" onclick="setFilter('all')">ALL</button>
+                <button class="filt-btn" onclick="setFilter('aog')">AOG</button>
+                <button class="filt-btn" onclick="setFilter('cult')">CULT</button>
+                <button class="filt-btn" onclick="setFilter('marquee')">MARQUEE</button>
+            </div>
+            <div class="filter-group">
+                <button class="filt-btn active" onclick="setQFilter('all')">YEAR</button>
+                <button class="filt-btn" onclick="setQFilter('Q2')">Q2</button>
+                <button class="filt-btn" onclick="setQFilter('Q3')">Q3</button>
+                <button class="filt-btn" onclick="setQFilter('Q4')">Q4</button>
+                <button class="filt-btn" onclick="setQFilter('Q1')">Q1</button>
+            </div>
+        </div>
+
+        <div class="calendar-grid" id="months-grid"></div>
+    </div>
+
+    <footer class="marshal-footer">
+        <div class="marshal-credit">Calendar Created By - Gaurav Subedi</div>
+        <div class="marshal-role">Head Marshal - TVS AOG X CULT Nepal Chapter</div>
+        <p style="font-size: 10px; color: var(--text-muted); margin-top: 10px;">Operational Control Dashboard for
+            2026-27 Season</p>
+    </footer>
+
+    <div class="floating-controls">
+        <button class="circle-btn btn-red" onclick="toggleRoadmap()" title="Verify Roadmap">
+            <i data-lucide="calendar"></i>
+        </button>
+        <button class="circle-btn btn-blue" onclick="toggleEdit()" title="Ride Editor">
+            <i data-lucide="layout-dashboard"></i>
+        </button>
+    </div>
+
+    <!-- Overlays -->
+    <div class="overlay" id="login-overlay" onclick="if(event.target===this) this.style.display='none'">
+        <div class="modal-window login-window">
+            <h3 style="font-weight:800; color:var(--tvs-blue); margin-bottom: 0.5rem; text-transform:uppercase">Marshal
+                Access</h3>
+            <p style="font-size: 11px; color: var(--text-muted); font-weight:700; margin-bottom: 2rem">AUTHORIZED STAFF
+                ONLY</p>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="login-user" class="form-input" placeholder="TVS_Nepal">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
+            </div>
+            <div class="form-group" style="display:flex; gap:10px; margin-top:2rem;">
+                <button class="btn-primary" onclick="handleLogin()">Authorize Entry</button>
+                <button class="btn-secondary" onclick="document.getElementById('login-overlay').style.display='none'"
+                    style="width:100%; background:var(--bg-slate); color:var(--text-dim); border:none; padding:14px; border-radius:12px; font-weight:700; cursor:pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="edit-overlay" onclick="if(event.target===this) toggleEdit()">
+        <div class="modal-window">
+            <div class="modal-top">
+                <h3 style="font-weight:800; color:var(--tvs-blue); transform:var(--slant)">RIDE EDITOR</h3>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="addRide()"
+                        style="background:var(--tvs-red); color:white; border:none; padding:8px 16px; border-radius:10px; font-weight:700; cursor:pointer">+
+                        New Ride</button>
+                    <button onclick="toggleEdit()"
+                        style="background:var(--bg-slate); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" id="edit-body"></div>
+        </div>
+    </div>
+
+    <div class="overlay" id="roadmap-overlay" onclick="if(event.target===this) toggleRoadmap()">
+        <div class="modal-window">
+            <div class="modal-top">
+                <h3 style="font-weight:800; color:var(--tvs-blue); transform:var(--slant)">YEARLY ROADMAP</h3>
+                <button onclick="toggleRoadmap()"
+                    style="background:var(--bg-slate); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="roadmap-scroll" id="roadmap-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chaptersList = ['Bagmati', 'Narayani', 'Lumbini', 'Mahakali', 'Gandaki', 'Bheri', 'Mechi', 'Rapti', 'Koshi'];
+        const monthsList = [
+            'May 2026', 'June 2026', 'July 2026', 'August 2026', 'September 2026', 'October 2026',
+            'November 2026', 'December 2026', 'January 2027', 'February 2027', 'March 2027', 'April 2027'
+        ];
+        const monthQuarters = {};
+        const quarters = {
+            'Q2': ['May 2026', 'June 2026', 'July 2026'],
+            'Q3': ['August 2026', 'September 2026', 'October 2026'],
+            'Q4': ['November 2026', 'December 2026', 'January 2027'],
+            'Q1': ['February 2027', 'March 2027', 'April 2027']
+        };
+        Object.entries(quarters).forEach(([q, ms]) => ms.forEach(m => monthQuarters[m] = q));
+
+        let rides = [];
+        let rideIdCounter = 1;
+        let isLoggedIn = false;
+
+        // Seeding 36 AOG, 12 CULT, 2 Marquee
+        Object.entries(quarters).forEach(([q, ms]) => {
+            chaptersList.forEach((chap, idx) => {
+                const mIdx = Math.floor(idx / 3);
+                const wIdx = (idx % 3) + 1;
+                rides.push({ id: rideIdCounter++, month: ms[mIdx], week: `Wk ${wIdx}`, type: 'aog', label: `AOG – ${chap} Ride`, q: q, done: false, details: "" });
+            });
+        });
+        monthsList.forEach((m, idx) => {
+            const chapIdx = idx < 9 ? idx : (idx - 9);
+            rides.push({ id: rideIdCounter++, month: m, week: `Wk ${idx % 2 === 0 ? 4 : 5}`, type: 'cult', label: `CULT – ${chaptersList[chapIdx]} Ride`, q: monthQuarters[m], done: false, details: "" });
+        });
+        rides.push({ id: rideIdCounter++, month: 'October 2026', week: 'Wk 1', type: 'marquee', label: 'MARQUEE – Tibet Tour', q: 'Q3', done: false, details: "" });
+        rides.push({ id: rideIdCounter++, month: 'December 2026', week: 'Wk 2', type: 'marquee', label: 'MARQUEE – Motosoul Goa', q: 'Q4', done: false, details: "" });
+
+        function handleLogin() {
+            if (document.getElementById('login-user').value === 'TVS_Nepal' && document.getElementById('login-pass').value === 'AOGxCULT9') {
+                isLoggedIn = true;
+                document.getElementById('login-overlay').style.display = 'none';
+                toggleEdit();
+            } else alert('Invalid Credentials');
+        }
+        function toggleEdit() {
+            if (!isLoggedIn) { document.getElementById('login-overlay').style.display = 'flex'; return; }
+            const el = document.getElementById('edit-overlay');
+            el.style.display = (el.style.display === 'flex' ? 'none' : 'flex');
+            if (el.style.display === 'flex') renderEditPanel();
+        }
+        function toggleRoadmap() {
+            const el = document.getElementById('roadmap-overlay');
+            el.style.display = (el.style.display === 'flex' ? 'none' : 'flex');
+            if (el.style.display === 'flex') renderRoadmap();
+        }
+
+        function renderStats() {
+            const total = rides.length, done = rides.filter(r => r.done).length;
+            document.getElementById('stat-done').textContent = total > 0 ? Math.round((done / total) * 100) + '%' : '0%';
+            document.getElementById('done-counter').textContent = `${done} Concluded`;
+            document.getElementById('stat-aog').textContent = rides.filter(r => r.type === 'aog').length;
+            document.getElementById('stat-cult').textContent = rides.filter(r => r.type === 'cult').length;
+            document.getElementById('stat-total').textContent = total;
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function renderChapters() {
+            const grid = document.getElementById('chapter-grid');
+            grid.innerHTML = chaptersList.map(c => {
+                const chapAog = rides.filter(r => r.type === 'aog' && r.label.includes(c));
+                const done = chapAog.filter(r => r.done).length;
+                const progress = chapAog.length > 0 ? (done / chapAog.length) * 100 : 0;
+                return `
+                <div class="activity-card">
+                    <div style="font-weight:700;font-size:14px;color:var(--tvs-blue);margin-bottom:8px">${c}</div>
+                    <div class="progress-wrap"><div class="progress-bar" style="width:${progress}%;background:${done === 4 ? 'var(--cult-green)' : 'var(--tvs-blue)'}"></div></div>
+                    <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase">${done === 4 ? 'Mission Complete' : `${done}/4 Achieved`}</div>
+                </div>`;
+            }).join('');
+        }
+
+        let currentTypeFilter = 'all', currentQFilter = 'all';
+        function setFilter(f) {
+            currentTypeFilter = f;
+            document.querySelectorAll('.filter-group:first-child .filt-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === f));
+            renderCalendar();
+        }
+        function setQFilter(q) {
+            currentQFilter = q;
+            document.querySelectorAll('.filter-group:last-child .filt-btn').forEach(b => b.classList.toggle('active', b.textContent === q || (q === 'all' && b.textContent === 'YEAR')));
+            renderCalendar();
+        }
+
+        function toggleDetails(id) {
+            const d = document.getElementById(`details-${id}`);
+            const i = document.getElementById(`chevron-${id}`);
+            d.classList.toggle('open');
+            i.classList.toggle('open');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('months-grid');
+            grid.innerHTML = '';
+            monthsList.forEach(m => {
+                const q = monthQuarters[m];
+                if (currentQFilter !== 'all' && q !== currentQFilter) return;
+                const monthRides = rides.filter(r => r.month === m);
+                const card = document.createElement('div');
+                card.className = 'month-box' + (['October 2026', 'December 2026'].includes(m) ? ' marquee' : '');
+                card.innerHTML = `<div class="month-header"><span class="month-title">${m}</span><span class="month-info">${monthRides.length} RIDES · ${q}</span></div>`;
+                const content = document.createElement('div');
+                content.className = 'month-content';
+                const sortedWeeks = [...new Set(monthRides.map(r => r.week))].sort();
+                sortedWeeks.forEach(wk => {
+                    const wkRides = monthRides.filter(r => r.week === wk && (currentTypeFilter === 'all' || r.type === currentTypeFilter));
+                    if (wkRides.length === 0) return;
+                    const row = document.createElement('div');
+                    row.className = 'wk-row';
+                    row.innerHTML = `<div class="wk-label">${wk}</div><div>` + wkRides.map(r => `
+                    <div class="evt-container">
+                        <div class="evt-pill evt-${r.type} ${r.done ? 'concluded' : ''}" onclick="toggleDetails(${r.id})">
+                            <i data-lucide="${r.type === 'aog' ? 'zap' : r.type === 'cult' ? 'compass' : 'award'}" size="14"></i> ${r.label}
+                            ${r.done ? '<span class="done-icon"><i data-lucide="check-circle" size="14"></i></span>' : ''}
+                            <i data-lucide="chevron-down" size="14" class="expand-icon" id="chevron-${r.id}" style="margin-left: ${r.done ? '10px' : 'auto'}"></i>
+                        </div>
+                        <div class="evt-details" id="details-${r.id}">
+                            ${r.details || '<i>No specific details provided for this mission yet.</i>'}
+                        </div>
+                    </div>`).join('') + `</div>`;
+                    content.appendChild(row);
+                });
+                if (content.children.length > 0) { card.appendChild(content); grid.appendChild(card); }
+            });
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function renderRoadmap() {
+            const container = document.getElementById('roadmap-container');
+            let html = `<table class="roadmap-table"><thead><tr><th style="position:sticky;left:0;z-index:10;background:var(--bg-slate)">Chapter</th>`;
+            monthsList.forEach(m => html += `<th>${m}</th>`);
+            html += `</tr></thead><tbody>`;
+            chaptersList.forEach(chap => {
+                html += `<tr><td class="chap-col">${chap}</td>`;
+                monthsList.forEach(m => {
+                    const r = rides.find(rd => rd.month === m && rd.label.includes(chap) && rd.type === 'aog');
+                    html += `<td>${r ? `<span class="roadmap-marker bg-aog">${r.week.replace('Wk ', 'W')}</span>` : ''}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += `<tr><td class="chap-col" style="color:var(--cult-green)">CULT Rides</td>`;
+            monthsList.forEach(m => {
+                const r = rides.filter(rd => rd.month === m && rd.type === 'cult');
+                html += `<td>${r.map(rd => `<span class="roadmap-marker bg-cult" style="display:block;margin-bottom:2px">${rd.week.replace('Wk ', 'W')}</span>`).join('')}</td>`;
+            });
+            html += `</tr></tbody></table>`;
+            container.innerHTML = html;
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function checkWordCount(id, val) {
+            const words = val.trim().split(/\s+/).filter(w => w.length > 0);
+            const count = words.length;
+            const msg = document.getElementById(`word-count-${id}`);
+            msg.textContent = `${count} / 255 words`;
+            msg.classList.toggle('warning', count > 255);
+            return count <= 255;
+        }
+
+        function renderEditPanel() {
+            const body = document.getElementById('edit-body');
+            body.innerHTML = '';
+            monthsList.forEach(m => {
+                const mRides = rides.filter(r => r.month === m);
+                if (mRides.length === 0) return;
+                const group = document.createElement('div');
+                group.className = 'edit-month-group';
+                group.innerHTML = `<div class="edit-month-label">${m}</div>`;
+                mRides.forEach(r => {
+                    const card = document.createElement('div');
+                    card.className = 'edit-card';
+                    const words = (r.details || "").trim().split(/\s+/).filter(w => w.length > 0).length;
+                    card.innerHTML = `
+                    <div class="edit-row">
+                        <select onchange="updateRide(${r.id},'week',this.value)" class="form-input">${['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5'].map(w => `<option${w === r.week ? ' selected' : ''}>${w}</option>`).join('')}</select>
+                        <div class="type-picker">
+                            <button class="type-btn type-aog ${r.type === 'aog' ? 'active' : ''}" onclick="updateRide(${r.id},'type','aog')"><i data-lucide="zap" size="14"></i></button>
+                            <button class="type-btn type-cult ${r.type === 'cult' ? 'active' : ''}" onclick="updateRide(${r.id},'type','cult')"><i data-lucide="compass" size="14"></i></button>
+                            <button class="type-btn type-marquee ${r.type === 'marquee' ? 'active' : ''}" onclick="updateRide(${r.id},'type','marquee')"><i data-lucide="award" size="14"></i></button>
+                        </div>
+                        <input type="text" value="${r.label}" onchange="updateRide(${r.id},'label',this.value)" class="form-input">
+                        <input type="checkbox" class="check-toggle" ${r.done ? 'checked' : ''} onchange="updateRide(${r.id}, 'done', this.checked)">
+                        <button onclick="deleteRide(${r.id})" style="color:var(--tvs-red);border:none;background:none;cursor:pointer;font-size:20px">&times;</button>
+                    </div>
+                    <div>
+                        <textarea class="details-area" placeholder="Enter ride details (itinerary, special requirements, etc...)" onchange="if(checkWordCount(${r.id}, this.value)) updateRide(${r.id},'details',this.value)">${r.details || ''}</textarea>
+                        <div class="word-counter" id="word-count-${r.id}">${words} / 255 words</div>
+                    </div>
+                `;
+                    group.appendChild(card);
+                });
+                body.appendChild(group);
+            });
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function updateRide(id, f, v) {
+            const r = rides.find(rd => rd.id === id);
+            if (r) r[f] = v;
+            renderAll();
+        }
+        function deleteRide(id) { rides = rides.filter(r => r.id !== id); renderAll(); }
+        function addRide() {
+            const id = Math.max(0, ...rides.map(r => r.id)) + 1;
+            rides.push({ id, month: 'May 2026', week: 'Wk 1', type: 'aog', label: 'New Ride', q: 'Q2', done: false, details: "" });
+            renderAll();
+        }
+        function renderAll() {
+            renderStats(); renderChapters(); renderCalendar();
+            if (document.getElementById('edit-overlay').style.display === 'flex') renderEditPanel();
+        }
+
+        window.onload = renderAll;
+    </script>
+</body>
+
+</html>
