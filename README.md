@@ -1,59 +1,31 @@
-# TVS Nepal — Ride Calendar 2026–27
-### 🏁 Mission Control for the Head Marshal
+# TVS Nepal: AOG X CULT Operational Portal (Season 26-27)
 
-Welcome to the official **Operational Ride Calendar** for the TVS Nepal 2026-27 season. This dashboard is the central authority for scheduling, tracking, and executing every AOG, CULT, and Marquee event across the country.
+A high-performance command center for administrative oversight, chapter intelligence tracking, and precision mission briefings for the TVS Nepal 36-12-2 ride formula.
 
----
+## 🚀 Key Features
+- **Dynamic Registration Hero**: Modular banner with support for custom backdrop image uploads (1MB limit).
+- **Chapter Intelligence Radar**: Real-time status tracking for all 9 Chapters (Bagmati to Sudurpaschim).
+- **Precision Mission Grid**: Monthly calendar view with "Exact Day" scheduling (e.g., 17, Sat).
+- **Search & Filtering**: Search missions by chapter or filter by ride type (AOG/CULT/Marquee) and financial quarter (Q1-Q4).
+- **Administrative Command Console**: 3-Tier editor panel for Marshals to manage data, imagery, and status grades.
+- **Master Roadmap Matrix**: Unified overview of the entire season's strategic alignment.
 
-## 🏔️ The Season Objective
-The 2026-27 season (May 2026 to April 2027) is built on a mathematically precise foundation to ensure maximum community engagement and nationwide coverage. Our goal is to achieve the **36-12-2 Formula**:
+## 🔑 Access Credentials
+The **Command Center** and **Roadmap Matrix** are gated for operational personnel:
+- **Username**: `TVS_Nepal`
+- **Access Key**: `AOGxCULT9`
 
-### ⚡ 36 AOG Missions (Performance)
-*   **The Rule**: Every chapter must conduct **one ride per quarter**.
-*   **The Scale**: With 9 chapters across Nepal, this results in exactly **36 AOG rides** annually (3 rides every month).
-*   **Chapters**: Bagmati, Narayani, Lumbini, Mahakali, Gandaki, Bheri, Mechi, Rapti, and Koshi.
+## 📊 Technical Standards
+- **Framework**: Vanilla JS / HTML5 / CSS3 (No external dependencies excluding Lucide Icons & Google Fonts).
+- **Persistence**: Deep integration with `localStorage` (tvs_v7_ schema).
+- **Design Language**: Glassmorphism with Mesh Gradient fallbacks.
+- **Backdrop Uploads**: Optimised for **1200x400px** photos with automatic readability overlays.
 
-### 🧭 12 CULT Missions (Discovery)
-*   **The Rule**: One major lifestyle/discovery mission per month.
-*   **The Scale**: **12 CULT rides** annually, rotating across chapters with "Bonus Missions" awarded to the top-performing regional leads.
-
-### 🏆 2 Marquee Events (The Pinnacle)
-*   **October 2026**: The **Tibet Tour** (AOG X CULT Joint Expedition).
-*   **December 2026**: **Motosoul Goa** (International Festival).
-
----
-
-## 🛠️ Dashboard Capabilities
-
-### 📊 Real-Time Ride Stats
-Track our annual KPIs at a glance. The dashboard automatically calculates:
-*   **Execution Percentage**: How much of the planned season has been concluded.
-*   **Target Trackers**: Visual warnings if AOG or CULT ride counts fall below the mandatory annual targets.
-*   **Chapter Progress**: Individual "Season Readiness" bars for each of the 9 chapters.
-
-### 🗺️ Yearly Verification Roadmap
-Access the **Red Calendar Icon** to see the "Bird's-eye View." This matrix allows the Head Marshal to verify the entire year’s schedule in a single screen, ensuring no chapter is left behind in any quarter.
-
-### ✏️ Marshal Ride Editor
-The **Blue Dashboard Icon** opens the command center.
-*   **Authorative Editing**: Update weeks, change ride types, or refine mission labels.
-*   **Detailed Descriptions**: Each ride supports a **255-word briefing** for itineraries and mission requirements.
-*   **Execution Control**: Mark rides as **"Concluded"** to update the national achievement stats.
+## 🛠️ Usage for Marshals
+1. Click the **Blue Shield** icon (bottom-right) to enter the Command Center.
+2. Update Chapter Member counts and Engagement Grades as missions conclude.
+3. Use the **WIPE PORTAL** feature only when initializing a new season transition.
+4. **Data Persistence**: Clearing browser cache will reset the portal to factory defaults.
 
 ---
-
-## 🔒 Access & Security
-
-To maintain the integrity of the season schedule, the **Ride Editor** is secured behind a Marshal Gateway.
-
-*   **Authorized Personnel Only**: Access requires the official Marshal credentials.
-*   **Data Integrity**: Local scheduling prevents accidental public edits while allowing the Head Marshal full control over the fleet's roadmap.
-
----
-
-## 📅 Maintenance Cycles
-It is recommended that the **Head Marshal** reviews the **Verification Roadmap** at the end of every quarter (July, October, January, April) to ensure the 36-12-2 target remains on track regardless of operational shifts.
-
----
-**Ride Pure. Ride Apache. Discover Ronin.**  
-*Jagadamba Motors Pvt. Ltd. — TVS Nepal*
+*Created for TVS Nepal — AOG X CULT Chapter Operations*
